@@ -1,0 +1,17 @@
+[project]
+name = "billmate"
+version = "0.1.0"
+description = "A simply way to tracking your bill"
+authors = [
+    {name = "yosephbernandus", email = "yosephbernandus@gmail.com"},
+]
+dependencies = [
+    "Django>=5.0.3",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
