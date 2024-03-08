@@ -7,6 +7,9 @@ authors = [
 ]
 dependencies = [
     "Django>=5.0.3",
+    "django-environ>=0.11.2",
+    "psycopg-binary>=3.1.18",
+    "psycopg2-binary>=2.9.9",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
