@@ -13,3 +13,8 @@
 
 ## assets build
 - npm run tw-watch
+
+## migration
+- pdm run manage.py makemigrations base --empty
+- pdm run manage.py migrate base zero (zero)
+- pdm run manage.py migrate base <migration_name> (1 step migration)
