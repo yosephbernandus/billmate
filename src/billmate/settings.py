@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
     'home.apps.HomeConfig',
+    'participant.apps.ParticipantConfig',
+    'bill_group.apps.BillGroupConfig',
 ]
 
 MIDDLEWARE = [

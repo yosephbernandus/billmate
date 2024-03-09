@@ -1,0 +1,16 @@
+<a href="{% url 'bill_group:create_bill_group' %}"> Create Group </a>
+
+<table>
+    <tbody>
+      <tr>
+        <th>Descriptions</th>
+        <th>Category</th>
+      </tr>
+      {% for bill_group in bill_groups %}
+      <tr>
+        <td>{{ bill_group.description }} </td>
+        <td>{{ bill_group.category }} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
