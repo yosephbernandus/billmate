@@ -1,0 +1,11 @@
+<form action="{% url 'bill_group:update_bill_group' group.group_id %}" method="post">  <label for="Category">Category:</label>
+    {% csrf_token %}
+    <input type="text" id="Category" name="category" value={{group.category}}>
+    <br>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" >
+        {{group.description}}
+    </textarea>
+    <br>
+    <button type="submit" class="btn btn-block">Submit</button>
+</form>

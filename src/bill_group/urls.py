@@ -5,4 +5,5 @@ from bill_group import views
 urlpatterns = [
     path("", views.index, name="index"),
     path("create", views.create, name="create_bill_group"),
+    path("<int:group_id>/update", views.update, name="update_bill_group"),
 ]
