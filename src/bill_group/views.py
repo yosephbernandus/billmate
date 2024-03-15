@@ -20,7 +20,7 @@ def index(request):
     rows = []
     user_id = request.user.id
     with connection.cursor() as cursor:
-        cursor.execute("SELECT group_id, description, category FROM bill_group where auth_user_id = %s", [user_id])
+        cursor.execute("SELECT name, group_id, description, category FROM bill_group where auth_user_id = %s order by group_id desc", [user_id])
         rows = dictfetchall(cursor)
 
     context = {
@@ -33,13 +33,15 @@ def index(request):
 @login_required
 def create(request):
     if request.POST:
+        name = request.POST.get('name')
         category = request.POST.get('category')
         description = request.POST.get('description')
         user_id = request.user.id
         with connection.cursor() as cursor:
             utc_now = timezone.now()
             cursor.execute(
-                "INSERT INTO bill_group (description, category, created_at, updated_at, auth_user_id) VALUES (%s, %s, %s, %s, %s) RETURNING *", [
+                "INSERT INTO bill_group (name, description, category, created_at, updated_at, auth_user_id) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *", [
+                    name,
                     description,
                     category,
                     utc_now,
@@ -56,30 +58,34 @@ def create(request):
 def update(request, group_id):
     user_id = request.user.id
     if request.POST:
+        name = request.POST.get('name')
         category = request.POST.get('category')
         description = request.POST.get('description')
         with connection.cursor() as cursor:
             utc_now = timezone.now()
             cursor.execute(
-                "INSERT INTO bill_group (description, category, updated_at, auth_user_id) VALUES (%s, %s, %s, %s) RETURNING *", [
+                "UPDATE bill_group SET name = %s, description = %s, category = %s, updated_at = %s WHERE auth_user_id = %s and group_id = %s RETURNING *", [
+                    name,
                     description,
                     category,
                     utc_now,
-                    user_id
+                    user_id,
+                    group_id,
                 ]
             )
         return redirect('bill_group:index')
 
     row = {}
     with connection.cursor() as cursor:
-        cursor.execute("SELECT group_id, description, category FROM bill_group where group_id = %s and auth_user_id = %s", [
+        cursor.execute("SELECT group_id, name, description, category FROM bill_group where group_id = %s and auth_user_id = %s", [
             group_id, user_id
         ])
         row = cursor.fetchone()
         row = {
             'group_id': row[0],
-            'description': row[1],
-            'category': row[2],
+            'name': row[1],
+            'description': row[2],
+            'category': row[3],
         }
 
     context = {

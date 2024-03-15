@@ -1,5 +1,7 @@
 <form action="{% url 'bill_group:create_bill_group' %}" method="post">  <label for="Category">Category:</label>
     {% csrf_token %}
+    <input type="text" id="Name" name="name">
+    <br>
     <input type="text" id="Category" name="category">
     <br>
     <label for="description">Description:</label>
