@@ -13,6 +13,7 @@
         <th>Descriptions</th>
         <th>Category</th>
         <th>Update</th>
+        <th>Add Participant</th>
       </tr>
       {% for bill_group in bill_groups %}
       <tr>
@@ -20,6 +21,7 @@
         <td>{{ bill_group.description }} </td>
         <td>{{ bill_group.category }} </td>
         <td><a href="{% url 'bill_group:update_bill_group' bill_group.group_id %}"> Update</td>
+        <td><a href="{% url 'participant:add_participant' bill_group.group_id %}"> Add Participant</td>
       </tr>
       {% endfor %}
     </tbody>
