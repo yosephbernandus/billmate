@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html id="root" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'base/output.css' %}" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <header>
+            {% include "header.html" %} 
+        </header>
+        <main id="content">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include "footer.html" %}
+    </body> 
+    <script src={% static 'base/htmx.min.js' %}></script>
+    <script>
+        const themeToggle = document.querySelector("#theme-toggle");
+        const currentTheme = localStorage.getItem("theme");
+
+        if (currentTheme == "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+            themeToggle.innerText="🌞";
+        } else {
+            themeToggle.innerText = "🌚"
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+
+
+        function themeMode() {
+
+            if (themeToggle.innerHTML == '🌚') {
+                document.documentElement.setAttribute("data-theme", "light");
+                themeToggle.innerText="🌞";
+                theme = 'light';
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                themeToggle.innerText="🌚";
+                theme = 'dark';
+            }
+
+            localStorage.setItem("theme", theme);
+        }
+
+        themeToggle.addEventListener("click", themeMode)
+    </script>
+</html>

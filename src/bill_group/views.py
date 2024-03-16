@@ -15,7 +15,7 @@ def dictfetchall(cursor):
     return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
-@login_required
+@login_required(login_url="")
 def index(request):
     rows = []
     user_id = request.user.id
@@ -30,7 +30,7 @@ def index(request):
     return render(request, "bill_group/index.html", context)
 
 
-@login_required
+@login_required(login_url="")
 def create(request):
     if request.POST:
         name = request.POST.get('name')
@@ -54,7 +54,7 @@ def create(request):
     return render(request, "bill_group/create.html")
 
 
-@login_required
+@login_required(login_url="")
 def update(request, group_id):
     user_id = request.user.id
     if request.POST:
