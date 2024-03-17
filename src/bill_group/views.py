@@ -107,6 +107,10 @@ def update(request, group_id):
     return render(request, "bill_group/update.html", context)
 
 
+def bill_index(request, group_id):
+    return render(request, "bill_group/bill_index.html")
+
+
 def group_index(request, hash_ids: str):
     # TODO: Will add this later
     return render(request, "bill_group/index.html")
