@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="mx-auto flex min-h-screen max-w-[60rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
-  
-  <a href="{% url 'home:logout' %}"> Logout </a>
-  <a href="{% url 'bill_group:create_bill_group' %}"> Create Group </a>
+
+  <a class="btn" href="{% url 'bill_group:create_bill_group' %}">Create Group</a>
 
   {% for bill_group in bill_groups %}
   <div class="card bg-gray-200 p-4 rounded-md shadow-xl shadow hover:shadow-lg border border-gray-400 rounded-box">
