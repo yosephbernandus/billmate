@@ -2,6 +2,7 @@ from django.db import connection
 from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import render, redirect
+from bill_group.utils import create_public_group_link
 
 from django.contrib.auth.decorators import login_required
 
@@ -21,7 +22,18 @@ def index(request):
     user_id = request.user.id
     with connection.cursor() as cursor:
         cursor.execute("SELECT name, group_id, description, category FROM bill_group where auth_user_id = %s order by group_id desc", [user_id])
-        rows = dictfetchall(cursor)
+        all_groups = cursor.fetchall()
+
+        for group in all_groups:
+            public_link = create_public_group_link(group[1])
+            data = {
+                'name': group[0],
+                'group_id': group[1],
+                'description': group[2],
+                'category': group[3],
+                'public_link': public_link,
+            }
+            rows.append(data)
 
     context = {
         "bill_groups": rows
@@ -93,3 +105,8 @@ def update(request, group_id):
     }
 
     return render(request, "bill_group/update.html", context)
+
+
+def group_index(request, hash_ids: str):
+    # TODO: Will add this later
+    return render(request, "bill_group/index.html")
