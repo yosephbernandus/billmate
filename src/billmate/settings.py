@@ -24,6 +24,8 @@ env = environ.Env(
     PGUSER=(str, ''),
     PGPASSWORD=(str, ''),
     PGDB=(str, ''),
+    HASH_IDS_SALT=(str, ''),
+    SERVER_HOST_NAME=(str, '')
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +45,8 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
+HASH_IDS_SALT =  env('HASH_IDS_SALT')
+SERVER_HOST_NAME = env('SERVER_HOST_NAME')
 
 # Application definition
 

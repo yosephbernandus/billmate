@@ -20,7 +20,7 @@
     </body> 
     <script src={% static 'base/htmx.min.js' %}></script>
     <script>
-        const themeToggle = document.querySelector("#theme-toggle");
+        {% comment %} const themeToggle = document.querySelector("#theme-toggle");
         const currentTheme = localStorage.getItem("theme");
 
         if (currentTheme == "light") {
@@ -47,6 +47,6 @@
             localStorage.setItem("theme", theme);
         }
 
-        themeToggle.addEventListener("click", themeMode)
+        themeToggle.addEventListener("click", themeMode) {% endcomment %}
     </script>
 </html>
