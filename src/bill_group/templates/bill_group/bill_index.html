@@ -18,8 +18,8 @@
                   </label>
 
                   <div class="modal-action">
-                    <button class="btn" onclick="this.closest('dialog').close();">Close</button>
-                    <button class="btn" onclick="this.closest('dialog').close();">Submit</button>
+                    <a class="btn" onclick="this.closest('dialog').close();">Close</a>
+                    <button type="submit" class="btn" onclick="this.closest('dialog').close();">Submit</button>
                   </div>
                 </form>
               </div>
@@ -37,7 +37,14 @@
                     {% for participant in participants %}
                     <tr>
                       <td>{{participant.name}}</td>
-                      <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
+                      <td>
+                        <a
+                          hx-target="#participant-list"
+                          class="btn btn-xs btn-outline btn-error"
+                          hx-get="{% url 'participant:delete_participant' group_id participant.participant_id %}">
+                          Remove
+                        </a>
+                      </td>
                     </tr>
                     {% endfor %}
                   </tbody>
