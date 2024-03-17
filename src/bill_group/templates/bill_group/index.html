@@ -14,11 +14,11 @@
       <p><b> Public Link: </b> {{ bill_group.public_link }}</p>
       {% comment %} <a href="{% url 'participant:add_participant' bill_group.group_id %}"> Add Participant </a> {% endcomment %}
       <div class="card-actions justify-end">
-        <a class="btn btn-primary" href="{% url 'bill_group:update_bill_group' bill_group.group_id %}">Update Group Data</a>
+        <a class="btn btn-primary" href="{% url 'bill_group:update_bill_group' bill_group.group_id %}">Update</a>
       </div>
 
       <div class="card-actions justify-end">
-        <a class="btn btn-primary" href="{% url 'bill_group:update_bill_group' bill_group.group_id %}">Open</a>
+        <a class="btn btn-primary" href="{% url 'bill_group:group_bill_index' bill_group.group_id %}">Show Group Bill</a>
       </div>
     </div>
   </div>

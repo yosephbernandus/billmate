@@ -1,16 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form action="{% url 'bill_group:update_bill_group' group.group_id %}" method="post">  <label for="Category">Category:</label>
-    {% csrf_token %}
-    <input type="text" id="Name" name="name" value={{group.name}}>
-    <input type="text" id="Category" name="category" value={{group.category}}>
-    <br>
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" >
-        {{group.description}}
-    </textarea>
-    <br>
-    <button type="submit" class="btn btn-block">Submit</button>
-</form>
+<div class="mx-auto flex min-h-screen max-w-[60rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
+    <form action="{% url 'bill_group:update_bill_group' group.group_id %}" method="post">
+        {% csrf_token %}
+        <label class="form-control w-full">
+            <div class="name">
+                <span class="label-text">What your group name?</span>
+            </div>
+            <input id="name" name="name" type="text" placeholder="Type your group name" value={{group.name}} class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="category">
+                <span class="label-text">What your group category?</span>
+            </div>
+            <input id="category" name="category" type="text" placeholder="Type your group name" value={{group.category}} class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+            <span class="label-text">Group Description</span>
+            </div>
+            <textarea class="textarea textarea-bordered textarea-lg w-full" name="description">{{group.description}}</textarea>
+        </label>
+        <br />
+        <button type="submit" class="btn btn-block">Submit</button>
+    </form>
+</div>
 {% endblock %}

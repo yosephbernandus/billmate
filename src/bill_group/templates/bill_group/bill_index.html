@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mx-auto flex min-h-screen max-w-[80rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
+    <div class="flex flex-row">
+        <div class="w-4/10 min-w-[30%] bg-gray-200 rounded-md shadow-sm p-4">
+            <h2 class="card-title">Title: Squad Event 2024</h2>
+            <p>Participants:</p>
+            <button class="btn btn-xs btn-primary" onclick="openAddParticipantModal()">Add Participant</button>
+            <dialog id="add_participant" class="modal modal-bottom sm:modal-middle">
+              <div class="modal-box">
+                <form hx-post="{% url 'participant:add_participant' group_id %}" hx-target="#participant-list">
+                  {% csrf_token %}
+                  <label class="form-control w-full">
+                    <div class="label">
+                      <span class="label-text">What is participant name?</span>
+                    </div>
+                    <input type="text" id="participant-name" name="name" placeholder="Type participant name" class="input input-bordered w-full" />
+                  </label>
+
+                  <div class="modal-action">
+                    <button class="btn" onclick="this.closest('dialog').close();">Close</button>
+                    <button class="btn" onclick="this.closest('dialog').close();">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </dialog>
+            <div id="participant-list" class="overflow-x-auto" hx-swap="outerHTML">
+                <table class="table">
+                  <!-- head -->
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for participant in participants %}
+                    <tr>
+                      <td>{{participant.name}}</td>
+                      <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div class="w-6/10 min-w-[60%] bg-white rounded-md shadow-sm p-4">
+            <div class="card bg-gray-200 p-4 rounded-md shadow-xl shadow hover:shadow-lg border border-gray-400 rounded-box">
+                <div class="card-body p-4 rounded-md">
+                  <h2 class="card-title">{{ bill_group.name }}</h2>
+                  <p><i>{{ bill_group.description }} </i></p>
+                  
+                  <p><b> Category: </b> {{ bill_group.category }}</p>
+                  <p><b> Public Link: </b> {{ bill_group.public_link }}</p>
+                  {% comment %} <a href="{% url 'participant:add_participant' bill_group.group_id %}"> Add Participant </a> {% endcomment %}
+                  <div class="card-actions justify-end">
+                    <a class="btn btn-primary" href="">Update</a>
+                  </div>
+            
+                  <div class="card-actions justify-end">
+                    <a class="btn btn-primary" href="">Show Group Bill</a>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+<script>
+  function openAddParticipantModal() {
+    // Clear input value before showing the modal
+    document.getElementById("participant-name").value = "";
+    add_participant.showModal();
+  }
+</script>
+{% endblock %}

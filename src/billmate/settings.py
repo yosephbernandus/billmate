@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'participant.apps.ParticipantConfig',
     'bill_group.apps.BillGroupConfig',
+    'bill.apps.BillConfig',
 ]
 
 MIDDLEWARE = [
