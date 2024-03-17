@@ -1,0 +1,18 @@
+<div id="participant-list" class="overflow-x-auto" hx-swap="outerHTML">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for participant in participants %}
+            <tr>
+                <td>{{participant.name}}</td>
+                <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

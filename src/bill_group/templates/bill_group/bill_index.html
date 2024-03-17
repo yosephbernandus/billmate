@@ -5,7 +5,26 @@
         <div class="w-4/10 min-w-[30%] bg-gray-200 rounded-md shadow-sm p-4">
             <h2 class="card-title">Title: Squad Event 2024</h2>
             <p>Participants:</p>
-            <div class="overflow-x-auto">
+            <button class="btn btn-xs btn-primary" onclick="openAddParticipantModal()">Add Participant</button>
+            <dialog id="add_participant" class="modal modal-bottom sm:modal-middle">
+              <div class="modal-box">
+                <form hx-post="{% url 'participant:add_participant' group_id %}" hx-target="#participant-list">
+                  {% csrf_token %}
+                  <label class="form-control w-full">
+                    <div class="label">
+                      <span class="label-text">What is participant name?</span>
+                    </div>
+                    <input type="text" id="participant-name" name="name" placeholder="Type participant name" class="input input-bordered w-full" />
+                  </label>
+
+                  <div class="modal-action">
+                    <button class="btn" onclick="this.closest('dialog').close();">Close</button>
+                    <button class="btn" onclick="this.closest('dialog').close();">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </dialog>
+            <div id="participant-list" class="overflow-x-auto" hx-swap="outerHTML">
                 <table class="table">
                   <!-- head -->
                   <thead>
@@ -15,21 +34,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- row 1 -->
+                    {% for participant in participants %}
                     <tr>
-                      <td>Cy Ganderton</td>
+                      <td>{{participant.name}}</td>
                       <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
                     </tr>
-                    <!-- row 2 -->
-                    <tr>
-                      <td>Hart Hagerty</td>
-                      <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
-                    </tr>
-                    <!-- row 3 -->
-                    <tr>
-                      <td>Brice Swyre</td>
-                      <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
             </div>
@@ -56,4 +66,11 @@
         </div>
     </div>
 </div>
+<script>
+  function openAddParticipantModal() {
+    // Clear input value before showing the modal
+    document.getElementById("participant-name").value = "";
+    add_participant.showModal();
+  }
+</script>
 {% endblock %}

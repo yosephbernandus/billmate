@@ -3,17 +3,9 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from bill_group.utils import create_public_group_link
+from base.utils import dictfetchall
 
 from django.contrib.auth.decorators import login_required
-
-
-def dictfetchall(cursor):
-    """
-    Return all rows from a cursor as a dict.
-    Assume the column names are unique.
-    """
-    columns = [col[0] for col in cursor.description]
-    return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
 @login_required(login_url="")
@@ -107,8 +99,22 @@ def update(request, group_id):
     return render(request, "bill_group/update.html", context)
 
 
+@login_required(login_url="")
 def bill_index(request, group_id):
-    return render(request, "bill_group/bill_index.html")
+    user_id = request.user.id
+    participants = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "select p.participant_id, p.name from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
+            [group_id, user_id]
+        )
+        participants = dictfetchall(cursor)
+
+    context = {
+        'group_id': group_id,
+        'participants': participants
+    }
+    return render(request, "bill_group/bill_index.html", context)
 
 
 def group_index(request, hash_ids: str):

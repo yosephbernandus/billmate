@@ -1,14 +1,17 @@
 from django.db import connection
 from django.shortcuts import render
 from django.utils import timezone
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from base.utils import dictfetchall
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 
-# Create your views here.
+
 @login_required
 def add_participant(request, group_id):
     if request.POST:
+        user_id = request.user.id
         name = request.POST.get('name')
         with connection.cursor() as cursor:
             utc_now = timezone.now()
@@ -20,10 +23,18 @@ def add_participant(request, group_id):
                     group_id
                 ]
             )
-        return redirect('bill_group:index')
 
+        participants = []
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select p.participant_id, p.name from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
+                [group_id, user_id]
+            )
+            participants = dictfetchall(cursor)
 
-    context = {
-        'group_id': group_id,
-    }
-    return render(request, "participant/create.html", context)
+        context = {
+            'participants': participants
+        }
+        return render(request, 'participant/list_participant.html', context)
+    else:
+        return HttpResponseBadRequest("Invalid request method")
