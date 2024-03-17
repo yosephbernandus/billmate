@@ -33,8 +33,33 @@ def add_participant(request, group_id):
             participants = dictfetchall(cursor)
 
         context = {
+            'group_id': group_id,
             'participants': participants
         }
         return render(request, 'participant/list_participant.html', context)
     else:
         return HttpResponseBadRequest("Invalid request method")
+
+
+@login_required
+def delete_participant(request, group_id, participant_id):
+    user_id = request.user.id
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "DELETE from participant p using bill_group bg where bg.auth_user_id = %s and p.participant_id = %s",
+            [user_id, participant_id]
+        )
+
+    participants = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "select p.participant_id, p.name from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
+            [group_id, user_id]
+        )
+        participants = dictfetchall(cursor)
+
+    context = {
+        'group_id': group_id,
+        'participants': participants
+    }
+    return render(request, 'participant/list_participant.html', context)

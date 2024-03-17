@@ -10,9 +10,16 @@
             {% for participant in participants %}
             <tr>
                 <td>{{participant.name}}</td>
-                <td><a class="btn btn-xs btn-outline btn-error" href="">Remove</a></td>
+                <td>
+                    <a
+                    hx-target="#participant-list"
+                    class="btn btn-xs btn-outline btn-error"
+                    hx-get="{% url 'participant:delete_participant' group_id participant.participant_id %}">
+                    Remove
+                    </a>
+                </td>
             </tr>
             {% endfor %}
-        </tbody>
+          </tbody>
     </table>
 </div>
