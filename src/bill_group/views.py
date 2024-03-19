@@ -125,7 +125,15 @@ def group_index(request, hash_ids: str):
 @login_required(login_url="")
 def add_bill(request, group_id):
 
+    participants = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "select participant_id, name, group_id from participant where group_id = %s", [group_id]
+        )
+        participants = dictfetchall(cursor)
+
     context = {
-        'group_id': group_id
+        'group_id': group_id,
+        'participants': participants
     }
     return render(request, "bill_group/add_bill.html", context)

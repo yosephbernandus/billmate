@@ -63,10 +63,12 @@
             <label class="label">
                 <span class="label-text">Select Participants:</span>
             </label>
+            {% for participant in participants %}
             <label class="label cursor-pointer">
-                <input type="checkbox" name="participants" class="checkbox">
-                <span class="label-text">Jhon Doe</span> 
+                <input type="checkbox" value={{ participant.participant_id }} name="participants" class="checkbox">
+                <span class="label-text">{{ participant.name }}</span> 
             </label>
+            {% endfor %}
         </div>
         <label class="form-control w-full max-w-xs">
             <div class="label">
