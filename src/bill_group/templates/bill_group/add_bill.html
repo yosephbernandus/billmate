@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="mx-auto flex min-h-screen max-w-[60rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
+    <form action="{% url 'bill_group:group_add_bill' group_id %}" method="post">
+        {% csrf_token %}
+        <label class="form-control w-full">
+            <div class="name">
+                <span class="label-text">Bill Name</span>
+            </div>
+            <input id="name" name="name" type="text" placeholder="Type your bill name" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="subtotal">
+                <span class="label-text">Subtotal</span>
+            </div>
+            <input id="subtotal" name="subtotal" type="number" placeholder="Type your subtotal" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="total">
+                <span class="label-text">Total</span>
+            </div>
+            <input id="total" name="total" type="number" placeholder="Type your total" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="Tax Rate">
+                <span class="label-text">Tax Rate</span>
+            </div>
+            <input id="tax" name="tax" type="number" placeholder="Type your tax if any" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="Fee Rate">
+                <span class="label-text">Fee Rate</span>
+            </div>
+            <input id="fee" name="fee" type="number" placeholder="Type your fee if any" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="Discount Rate">
+                <span class="label-text">Discount Rate</span>
+            </div>
+            <input id="discount" name="discount" type="number" placeholder="Type your discount if any" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Description</span>
+            </div>
+            <textarea class="textarea textarea-bordered textarea-lg w-full" name="description" placeholder="Type your description"></textarea>
+        </label>
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">Who's paid this bill ?</span>
+            </div>
+            <select class="select select-bordered">
+                <option disabled selected>Pick one</option>
+                <option>Star Wars</option>
+                <option>Harry Potter</option>
+                <option>Lord of the Rings</option>
+                <option>Planet of the Apes</option>
+                <option>Star Trek</option>
+            </select>
+        </label>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Select Participants:</span>
+            </label>
+            <label class="label cursor-pointer">
+                <input type="checkbox" name="participants" class="checkbox">
+                <span class="label-text">Jhon Doe</span> 
+            </label>
+        </div>
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text">Bill Image</span>
+            </div>
+            <input type="file" name="bill_image" class="file-input file-input-bordered w-full max-w-xs" />
+          </label>
+        <br/>
+        <button type="submit" class="btn btn-block">Submit</button>
+    </form>
+</div>
+{% endblock %}

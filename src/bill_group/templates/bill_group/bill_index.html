@@ -53,6 +53,9 @@
         </div>
     
         <div class="w-6/10 min-w-[60%] bg-white rounded-md shadow-sm p-4">
+            <a class="btn btn-block" href="{% url 'bill_group:group_add_bill' group_id %}">Add Bill</a>
+            <br />
+            <br />
             <div class="card bg-gray-200 p-4 rounded-md shadow-xl shadow hover:shadow-lg border border-gray-400 rounded-box">
                 <div class="card-body p-4 rounded-md">
                   <h2 class="card-title">{{ bill_group.name }}</h2>

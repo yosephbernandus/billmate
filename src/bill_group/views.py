@@ -120,3 +120,12 @@ def bill_index(request, group_id):
 def group_index(request, hash_ids: str):
     # TODO: Will add this later
     return render(request, "bill_group/index.html")
+
+
+@login_required(login_url="")
+def add_bill(request, group_id):
+
+    context = {
+        'group_id': group_id
+    }
+    return render(request, "bill_group/add_bill.html", context)
