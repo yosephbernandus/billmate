@@ -8,4 +8,6 @@ urlpatterns = [
     path("<int:group_id>/update", views.update, name="update_bill_group"),
     path("group/<int:group_id>/bills", views.bill_index, name="group_bill_index"),
     path("group/<str:hash_ids>", views.group_index, name="group_index"),
+
+    path("group/<int:group_id>/add-bill", views.add_bill, name="group_add_bill"),
 ]
