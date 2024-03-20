@@ -105,6 +105,8 @@ def update(request, group_id):
 def bill_index(request, group_id):
     user_id = request.user.id
     participants = []
+
+    bills = []
     with connection.cursor() as cursor:
         cursor.execute(
             "select p.participant_id, p.name from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
@@ -112,9 +114,16 @@ def bill_index(request, group_id):
         )
         participants = dictfetchall(cursor)
 
+        cursor.execute(
+            "select b.bill_id, b.name, b.sub_total_bill, b.total_bill, b.description from bill b join bill_group bg on bg.group_id = b.group_id where b.group_id = %s and bg.auth_user_id = %s",
+            [group_id, user_id]
+        )
+        bills = dictfetchall(cursor)
+
     context = {
         'group_id': group_id,
-        'participants': participants
+        'participants': participants,
+        'bills': bills,
     }
     return render(request, "bill_group/bill_index.html", context)
 
