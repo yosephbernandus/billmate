@@ -8,37 +8,37 @@
             <div class="name">
                 <span class="label-text">Bill Name</span>
             </div>
-            <input id="name" name="name" type="text" placeholder="Type your bill name" class="input input-bordered w-full" />
+            <input id="name" name="name" type="text" placeholder="Type your bill name" class="input input-bordered w-full" required/>
         </label>
         <label class="form-control w-full">
             <div class="subtotal">
                 <span class="label-text">Subtotal</span>
             </div>
-            <input id="subtotal" name="subtotal" type="number" placeholder="Type your subtotal" class="input input-bordered w-full" />
+            <input id="subtotal" name="subtotal" type="number" placeholder="Type your subtotal" class="input input-bordered w-full" required />
         </label>
         <label class="form-control w-full">
             <div class="total">
                 <span class="label-text">Total</span>
             </div>
-            <input id="total" name="total" type="number" placeholder="Type your total" class="input input-bordered w-full" />
+            <input id="total" name="total" type="number" placeholder="Type your total" class="input input-bordered w-full" required/>
         </label>
         <label class="form-control w-full">
             <div class="Tax Rate">
                 <span class="label-text">Tax Rate</span>
             </div>
-            <input id="tax" name="tax" type="number" placeholder="Type your tax if any" class="input input-bordered w-full" />
+            <input id="tax" name="tax" type="number" placeholder="Type your tax if any" class="input input-bordered w-full" value="0" required/>
         </label>
         <label class="form-control w-full">
             <div class="Fee Rate">
                 <span class="label-text">Fee Rate</span>
             </div>
-            <input id="fee" name="fee" type="number" placeholder="Type your fee if any" class="input input-bordered w-full" />
+            <input id="fee" name="fee" type="number" placeholder="Type your fee if any" class="input input-bordered w-full" value="0" required/>
         </label>
         <label class="form-control w-full">
             <div class="Discount Rate">
                 <span class="label-text">Discount Rate</span>
             </div>
-            <input id="discount" name="discount" type="number" placeholder="Type your discount if any" class="input input-bordered w-full" />
+            <input id="discount" name="discount" type="number" placeholder="Type your discount if any" class="input input-bordered w-full" value="0" required/>
         </label>
         <label class="form-control w-full">
             <div class="label">
@@ -50,7 +50,7 @@
             <div class="label">
                 <span class="label-text">Who's paid this bill ?</span>
             </div>
-            <select class="select select-bordered">
+            <select name="paid_by" class="select select-bordered" required>
                 {% for participant in participants %}
                 <option value={{ participant.participant_id }}>{{ participant.name }}</option>
                 {% endfor %}
