@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="mx-auto flex min-h-screen max-w-[60rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
+    <form action="{% url 'bill_group:group_add_bill' group_id %}" method="post">
+        {% csrf_token %}
+        <label class="form-control w-full">
+            <div class="name">
+                <span class="label-text">Bill Name</span>
+            </div>
+            <input id="name" name="name" value={{bill.name}} type="text" placeholder="Type your bill name" class="input input-bordered w-full" required/>
+        </label>
+        <label class="form-control w-full">
+            <div class="subtotal">
+                <span class="label-text">Subtotal</span>
+            </div>
+            <input id="subtotal" value={{bill.sub_total_bill}} name="subtotal" type="number" placeholder="Type your subtotal" class="input input-bordered w-full" required />
+        </label>
+        <label class="form-control w-full">
+            <div class="total">
+                <span class="label-text">Total</span>
+            </div>
+            <input id="total" name="total" value={{bill.total_bill}} type="number" placeholder="Type your total" class="input input-bordered w-full" required/>
+        </label>
+        <label class="form-control w-full">
+            <div class="Tax Rate">
+                <span class="label-text">Tax Rate</span>
+            </div>
+            <input id="tax" name="tax" value={{bill.tax_rate}} type="number" placeholder="Type your tax if any" class="input input-bordered w-full" value="0" required/>
+        </label>
+        <label class="form-control w-full">
+            <div class="Fee Rate">
+                <span class="label-text">Fee Rate</span>
+            </div>
+            <input id="fee" name="fee" value={{bill.discount_rate}} type="number" placeholder="Type your fee if any" class="input input-bordered w-full" value="0" required/>
+        </label>
+        <label class="form-control w-full">
+            <div class="Discount Rate">
+                <span class="label-text">Discount Rate</span>
+            </div>
+            <input id="discount" name="discount" value={{bill.discount_rate}} type="number" placeholder="Type your discount if any" class="input input-bordered w-full" value="0" required/>
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Description</span>
+            </div>
+            <textarea class="textarea textarea-bordered textarea-lg w-full" name="description" placeholder="Type your description">{{bill.description}}</textarea>
+        </label>
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">Who's paid this bill ?</span>
+            </div>
+            <select name="paid_by" class="select select-bordered" required>
+                {% for participant in participants %}
+                <option value={{ participant.participant_id }}
+                {% if participant.participant_id in selected_paid_by_participant_id %} selected {% endif %}>
+                    {{ participant.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+        <div class="form-control w-full max-w-xs">
+            <label class="label">
+                <span class="label-text">Select Participants:</span>
+            </label>
+            {% for participant in participants %}
+            <label class="label cursor-pointer">
+                <input
+                    type="checkbox"
+                    value={{ participant.participant_id }}
+                    name="participants"
+                    class="checkbox"
+                    {% if participant.participant_id in selected_participant_owes %} checked="checked" {% endif %}
+                />
+                <span class="label-text">{{ participant.name }}</span> 
+            </label>
+            {% endfor %}
+        </div>
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text">Bill Image</span>
+            </div>
+            <input type="file" name="bill_image" class="file-input file-input-bordered w-full max-w-xs" />
+          </label>
+        <br/>
+        <button type="submit" class="btn btn-block">Submit</button>
+    </form>
+</div>
+{% endblock %}

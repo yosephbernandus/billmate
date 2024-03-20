@@ -53,26 +53,29 @@
         </div>
     
         <div class="w-6/10 min-w-[60%] bg-white rounded-md shadow-sm p-4">
-            <a class="btn btn-block" href="{% url 'bill_group:group_add_bill' group_id %}">Add Bill</a>
-            <br />
-            <br />
-            <div class="card bg-gray-200 p-4 rounded-md shadow-xl shadow hover:shadow-lg border border-gray-400 rounded-box">
-                <div class="card-body p-4 rounded-md">
-                  <h2 class="card-title">{{ bill_group.name }}</h2>
-                  <p><i>{{ bill_group.description }} </i></p>
-                  
-                  <p><b> Category: </b> {{ bill_group.category }}</p>
-                  <p><b> Public Link: </b> {{ bill_group.public_link }}</p>
-                  {% comment %} <a href="{% url 'participant:add_participant' bill_group.group_id %}"> Add Participant </a> {% endcomment %}
-                  <div class="card-actions justify-end">
-                    <a class="btn btn-primary" href="">Update</a>
-                  </div>
-            
-                  <div class="card-actions justify-end">
-                    <a class="btn btn-primary" href="">Show Group Bill</a>
-                  </div>
+          <a class="btn btn-block" href="{% url 'bill_group:group_add_bill' group_id %}">Add Bill</a>
+          <br />
+          <br />
+          {% for bill in bills %} 
+          <div class="card bg-gray-200 p-4 rounded-md shadow-xl shadow hover:shadow-lg border border-gray-400 rounded-box">
+              <div class="card-body p-4 rounded-md">
+                <h2 class="card-title">{{ bill.name }}</h2>
+                <p><i>{{ bill.description }} </i></p>
+
+                <p><b> Sub Total: </b> {{ bill.total_bill }}</p>
+                <p><b> Total: </b> {{ bill.sub_total_bill }}</p>
+                <div class="card-actions justify-end">
+                  <a class="btn btn-primary" href="{% url 'bill_group:group_update_bill' group_id bill.bill_id %}">Update</a>
+                </div>
+          
+                <div class="card-actions justify-end">
+                  <a class="btn btn-primary" href="">Show Transaction</a>
                 </div>
               </div>
+            </div>
+            <br />
+            <br />
+            {% endfor %}
         </div>
     </div>
 </div>
