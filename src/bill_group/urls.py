@@ -9,5 +9,7 @@ urlpatterns = [
     path("group/<int:group_id>/bills", views.bill_index, name="group_bill_index"),
     path("group/<str:hash_ids>", views.group_index, name="group_index"),
 
+    # Bill
     path("group/<int:group_id>/add-bill", views.add_bill, name="group_add_bill"),
+    path("group/<int:group_id>/update-bill/<int:bill_id>", views.update_bill, name="group_update_bill"),
 ]

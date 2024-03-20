@@ -136,10 +136,10 @@ def group_index(request, hash_ids: str):
 @login_required(login_url="")
 def add_bill(request, group_id):
     user_id = request.user.id
+    # TODO: Add condition to check group_id is related to user_id or not
+
 
     if request.POST:
-        # TODO: Add condition to check group_id is related to user_id or not
-
         name = request.POST.get('name')
         subtotal = request.POST.get('subtotal')
         total = request.POST.get('total')
@@ -190,3 +190,92 @@ def add_bill(request, group_id):
         'participants': participants
     }
     return render(request, "bill_group/add_bill.html", context)
+
+
+@login_required(login_url="")
+def update_bill(request, group_id, bill_id):
+    user_id = request.user.id
+    # TODO: Add condition to check group_id is related to user_id or not
+
+    if request.POST:
+
+        name = request.POST.get('name')
+        subtotal = request.POST.get('subtotal')
+        total = request.POST.get('total')
+        tax = request.POST.get('tax')
+        fee = request.POST.get('fee')
+        discount = request.POST.get('discount')
+        description = request.POST.get('description')
+        paid_by = request.POST.get('paid_by')
+        participant_ids = request.POST.getlist('participants')
+
+        utc_now = timezone.now()
+
+        # bill_id = None
+        # query = """
+        # INSERT INTO bill (name, sub_total_bill, total_bill, tax_rate, fee_rate, discount_rate, description, group_id, paid_by_participant_id, created_at, updated_at)
+        # VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        # RETURNING bill_id
+        # """
+        # with connection.cursor() as cursor:
+        #     cursor.execute(query, [
+        #         name, subtotal, total, tax, fee, discount, description, group_id, paid_by, utc_now, utc_now
+        #     ])
+        #     bill_id = cursor.fetchone()
+        #     bill_id = bill_id[0]
+
+        #     delete_query = "DELETE from bill_participant_owes where bill_id = %s"
+        #     cursor.execute(delete_query, [bill_id])
+
+        #     insert_data = [(bill_id, participant_id) for participant_id in participant_ids]
+        #     insert_query = """
+        #     INSERT INTO bill_participant_owes (bill_id, participant_id)
+        #     VALUES (%s, %s)
+        #     """
+        #     cursor.executemany(insert_query, insert_data)
+
+        return redirect(reverse('bill_group:group_bill_index', kwargs={'group_id': group_id}))
+
+    participants = []
+    bill = {}
+    selected_paid_by_participant_id = []
+    selected_participant_owes = []
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "select p.participant_id, p.name, p.group_id from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
+            [group_id, user_id]
+        )
+        participants = dictfetchall(cursor)
+ 
+        bill_query = """
+        select
+        b.bill_id,
+        b.name,
+        b.total_bill,
+        b.sub_total_bill,
+        b.tax_rate,
+        b.fee_rate,
+        b.discount_rate,
+        b.description,
+        b.paid_by_participant_id,
+        b.group_id
+        from bill b join bill_group bg on bg.group_id = b.group_id where b.bill_id = %s and b.group_id = %s and bg.auth_user_id = %s
+        """
+        cursor.execute(bill_query,[bill_id, group_id, user_id])
+        bills = dictfetchall(cursor)
+        
+        bill = bills[0]
+
+        selected_paid_by_participant_id = bill['paid_by_participant_id']
+        cursor.execute("select participant_id from bill_participant_owes where bill_id = %s", [bill_id])
+        selected_participant_owes = cursor.fetchall()
+        participant_owes_id = [row[0] for row in selected_participant_owes]
+
+    context = {
+        'group_id': group_id,
+        'participants': participants,
+        'bill': bill,
+        'selected_paid_by_participant_id': [selected_paid_by_participant_id],
+        'selected_participant_owes': participant_owes_id,
+    }
+    return render(request, "bill_group/update_bill.html", context)
