@@ -115,7 +115,7 @@ def bill_index(request, group_id):
         participants = dictfetchall(cursor)
 
         cursor.execute(
-            "select b.bill_id, b.name, b.sub_total_bill, b.total_bill, b.description from bill b join bill_group bg on bg.group_id = b.group_id where b.group_id = %s and bg.auth_user_id = %s",
+            "select b.bill_id, b.name, b.sub_total_bill, b.total_bill, b.description from bill b join bill_group bg on bg.group_id = b.group_id where b.group_id = %s and bg.auth_user_id = %s order by b.created_at desc",
             [group_id, user_id]
         )
         bills = dictfetchall(cursor)
@@ -211,28 +211,29 @@ def update_bill(request, group_id, bill_id):
 
         utc_now = timezone.now()
 
-        # bill_id = None
-        # query = """
-        # INSERT INTO bill (name, sub_total_bill, total_bill, tax_rate, fee_rate, discount_rate, description, group_id, paid_by_participant_id, created_at, updated_at)
-        # VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        # RETURNING bill_id
-        # """
-        # with connection.cursor() as cursor:
-        #     cursor.execute(query, [
-        #         name, subtotal, total, tax, fee, discount, description, group_id, paid_by, utc_now, utc_now
-        #     ])
-        #     bill_id = cursor.fetchone()
-        #     bill_id = bill_id[0]
+        with connection.cursor() as cursor:
+            bill_query = """
+            UPDATE bill SET
+            name = %s, sub_total_bill = %s, total_bill =  %s, tax_rate = %s, fee_rate = %s,
+            discount_rate = %s, description = %s, paid_by_participant_id = %s,
+            updated_at = %s WHERE bill_id = %s and group_id = %s returning bill_id
+            """
+            cursor.execute(bill_query, [
+                name, subtotal, total, tax, fee, discount, description,
+                paid_by, utc_now, bill_id, group_id
+            ])
+            bill_id = cursor.fetchone()
+            bill_id = bill_id[0]
 
-        #     delete_query = "DELETE from bill_participant_owes where bill_id = %s"
-        #     cursor.execute(delete_query, [bill_id])
+            delete_query = "DELETE from bill_participant_owes where bill_id = %s"
+            cursor.execute(delete_query, [bill_id])
 
-        #     insert_data = [(bill_id, participant_id) for participant_id in participant_ids]
-        #     insert_query = """
-        #     INSERT INTO bill_participant_owes (bill_id, participant_id)
-        #     VALUES (%s, %s)
-        #     """
-        #     cursor.executemany(insert_query, insert_data)
+            insert_data = [(bill_id, participant_id) for participant_id in participant_ids]
+            insert_query = """
+            INSERT INTO bill_participant_owes (bill_id, participant_id)
+            VALUES (%s, %s)
+            """
+            cursor.executemany(insert_query, insert_data)
 
         return redirect(reverse('bill_group:group_bill_index', kwargs={'group_id': group_id}))
 
