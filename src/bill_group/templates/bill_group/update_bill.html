@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="mx-auto flex min-h-screen max-w-[60rem] flex-col justify-start gap-4 bg-base-100 p-4 relative sm:gap-8 sm:p-8">
-    <form action="{% url 'bill_group:group_add_bill' group_id %}" method="post">
+    <form action="{% url 'bill_group:group_update_bill' group_id bill.bill_id%}" method="post">
         {% csrf_token %}
         <label class="form-control w-full">
             <div class="name">
