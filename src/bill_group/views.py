@@ -289,6 +289,7 @@ def detail_bill(request, group_id, bill_id):
 
     bill = {}
     participants = []
+    transactions = []
     with connection.cursor() as cursor:
         bill_query = """
         select
@@ -317,8 +318,19 @@ def detail_bill(request, group_id, bill_id):
         )
         participants = dictfetchall(cursor)
 
+        transaction_query = """
+        SELECT t.transaction_id, p.name, t.amount, t.type, t.status
+        from transaction t join participant p on p.participant_id = t.participant_id where t.bill_id = %s
+        order by t.transaction_id desc
+        """
+        cursor.execute(
+            transaction_query, [bill_id]
+        )
+        transactions = dictfetchall(cursor)
+
     context = {
         'bill': bill,
         'participants': participants,
+        'transactions': transactions,
     }
     return render(request, "bill_group/detail_bill.html", context)

@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'bill_group.apps.BillGroupConfig',
     'bill.apps.BillConfig',
     'django.contrib.humanize',
+    'transaction.apps.TransactionConfig',
 ]
 
 MIDDLEWARE = [
