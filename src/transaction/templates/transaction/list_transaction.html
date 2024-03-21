@@ -1,0 +1,37 @@
+{% load humanize %}
+<div id="list-transaction" hx-swap="outerHTML">
+    <div class="bg-white rounded-lg shadow-md p-4" >
+        <h2 class="text-xl font-semibold mb-2">Transaction List</h2>
+        <table class="table table-compact w-full">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{transaction.name}}</td>
+                    <td>{{transaction.amount|intcomma}}</td>
+                    <td>{{transaction.type}}</td>
+                    <td>{{transaction.status}}</td>
+                    <td>
+                        <a
+                            class="btn btn-xs btn-outline btn-error" href="">
+                            Edit
+                        </a> |
+                        <a
+                            class="btn btn-xs btn-outline btn-error" href="">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

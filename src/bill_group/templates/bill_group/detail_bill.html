@@ -19,15 +19,21 @@
 
         <div class="bg-white rounded-lg shadow-md p-4">
             <h2 class="text-xl font-semibold mb-2">Add Transaction</h2>
-            <form class="flex flex-col gap-2">
+            <form
+                hx-post="{% url 'transaction:add_transaction' bill.bill_id %}"
+                class="flex flex-col gap-2"
+                hx-target="#list-transaction"
+                hx-on::after-request="this.reset()"
+            >
+                {% csrf_token %}
                 <label for="amount" class="font-medium">Amount:</label>
-                <input type="number" id="amount" placeholder="eg. 100000" class="input input-bordered" required>
+                <input type="number" name="amount" id="amount" placeholder="eg. 100000" class="input input-bordered" required>
                 <label for="type" class="font-medium">Payment Type:</label>
-                <input id="type" class="input input-bordered" placeholder="Eg. Transfer" required>
+                <input id="type" name="type" class="input input-bordered" placeholder="Eg. Transfer" required>
                 <label for="status" class="font-medium">Status:</label>
                 <select name="status" class="select select-bordered" required>
-                    <option value="paid">Sudah Dibayar</option>
-                    <option value="unpaid">Belum Dibayar</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
                 </select>
                 <label for="participant" class="font-medium">Owe By:</label>
                 <select name="participant" class="select select-bordered" required>
@@ -39,24 +45,41 @@
             </form>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md p-4">
-            <h2 class="text-xl font-semibold mb-2">Transaction List</h2>
-            <table class="table table-compact w-full">
-            <thead>
-                <tr>
-                <th>Bill ID</th>
-                <th>Amount</th>
-                <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>12345</td>
-                <td>$100.00</td>
-                <td>2024-03-22</td>
-                </tr>
-            </tbody>
-            </table>
+        <div id="list-transaction" hx-swap="outerHTML">
+            <div class="bg-white rounded-lg shadow-md p-4" >
+                <h2 class="text-xl font-semibold mb-2">Transaction List</h2>
+                <table class="table table-compact w-full">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td>{{transaction.name}}</td>
+                            <td>{{transaction.amount|intcomma}}</td>
+                            <td>{{transaction.type}}</td>
+                            <td>{{transaction.status}}</td>
+                            <td>
+                                <a
+                                    class="btn btn-xs btn-outline btn-error" href="">
+                                    Edit
+                                </a> |
+                                <a
+                                    class="btn btn-xs btn-outline btn-error" href="">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
