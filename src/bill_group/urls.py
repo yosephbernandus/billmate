@@ -12,4 +12,5 @@ urlpatterns = [
     # Bill
     path("group/<int:group_id>/add-bill", views.add_bill, name="group_add_bill"),
     path("group/<int:group_id>/update-bill/<int:bill_id>", views.update_bill, name="group_update_bill"),
+    path("group/<int:group_id>/detail-bill/<int:bill_id>", views.detail_bill, name="group_detail_bill"),
 ]
