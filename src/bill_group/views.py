@@ -241,6 +241,7 @@ def update_bill(request, group_id, bill_id):
     bill = {}
     selected_paid_by_participant_id = []
     selected_participant_owes = []
+    participant_owes_id = []
     with connection.cursor() as cursor:
         cursor.execute(
             "select p.participant_id, p.name, p.group_id from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
@@ -280,3 +281,44 @@ def update_bill(request, group_id, bill_id):
         'selected_participant_owes': participant_owes_id,
     }
     return render(request, "bill_group/update_bill.html", context)
+
+
+def detail_bill(request, group_id, bill_id):
+    user_id = request.user.id
+    # TODO: Add condition to check group_id is related to user_id or not
+
+    bill = {}
+    participants = []
+    with connection.cursor() as cursor:
+        bill_query = """
+        select
+        b.bill_id,
+        b.name,
+        b.total_bill,
+        b.sub_total_bill,
+        b.tax_rate,
+        b.fee_rate,
+        b.discount_rate,
+        b.description,
+        b.paid_by_participant_id,
+        b.group_id,
+        p.name as paid_by_participant_name
+        from bill b join bill_group bg on bg.group_id = b.group_id join participant p on p.participant_id = b.paid_by_participant_id
+        where b.bill_id = %s and b.group_id = %s and bg.auth_user_id = %s
+        """
+        cursor.execute(bill_query,[bill_id, group_id, user_id])
+        bills = dictfetchall(cursor)
+        
+        bill = bills[0]
+        
+        cursor.execute(
+            "select p.participant_id, p.name, p.group_id from participant p join bill_group bg on bg.group_id = p.group_id where p.group_id = %s and bg.auth_user_id = %s",
+            [group_id, user_id]
+        )
+        participants = dictfetchall(cursor)
+
+    context = {
+        'bill': bill,
+        'participants': participants,
+    }
+    return render(request, "bill_group/detail_bill.html", context)
