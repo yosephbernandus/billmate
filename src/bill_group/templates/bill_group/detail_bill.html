@@ -66,13 +66,24 @@
                             <td>{{transaction.type}}</td>
                             <td>{{transaction.status}}</td>
                             <td>
+                                {% if transaction.status == 'unpaid' %}
                                 <a
-                                    class="btn btn-xs btn-outline btn-error" href="">
-                                    Edit
-                                </a> |
+                                    class="btn btn-xs btn-outline btn-success" href="">
+                                    Mark As Paid
+                                </a>
+                                {% else %}
                                 <a
-                                    class="btn btn-xs btn-outline btn-error" href="">
-                                    Delete
+                                    class="btn btn-xs btn-outline btn-warning" href="">
+                                    Mark As Unpaid
+                                </a>
+                                {% endif %}
+                                |
+                                <a
+                                    hx-target="#list-transaction"
+                                    class="btn btn-xs btn-outline btn-error"
+                                    hx-get="{% url 'transaction:delete_transaction' transaction.transaction_id %}"
+                                >
+                                    Remove
                                 </a>
                             </td>
                         </tr>
