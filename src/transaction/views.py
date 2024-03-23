@@ -110,3 +110,34 @@ def mark_as_paid(request, transaction_id):
     }
 
     return render(request, 'transaction/list_transaction.html', context)
+
+
+def mark_as_unpaid(request, transaction_id):
+    user_id = request.user.id
+    # TODO: Add condition to check transaction is related to user_id or not
+
+    transactions = []
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT bill_id from transaction where transaction_id = %s", [transaction_id])
+        bill_id = cursor.fetchone()
+        bill_id = bill_id[0]
+
+        cursor.execute(
+            "UPDATE transaction SET status = 'unpaid' where transaction_id = %s", [transaction_id]
+        )
+
+        transaction_query = """
+        SELECT t.transaction_id, p.name, t.amount, t.type, t.status
+        from transaction t join participant p on p.participant_id = t.participant_id where t.bill_id = %s
+        order by t.transaction_id desc
+        """
+        cursor.execute(
+            transaction_query, [bill_id]
+        )
+        transactions = dictfetchall(cursor)
+
+    context = {
+        'transactions': transactions,
+    }
+
+    return render(request, 'transaction/list_transaction.html', context)
