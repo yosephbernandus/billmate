@@ -42,7 +42,7 @@ services:
     volumes:
       - ./docker/postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: _iP0stgr3sP4ssw0rdXTr3m3lyL0ng
+      POSTGRES_PASSWORD: $PGPASSWORD
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
 volumes:
