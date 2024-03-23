@@ -91,8 +91,9 @@ def mark_as_paid(request, transaction_id):
         bill_id = cursor.fetchone()
         bill_id = bill_id[0]
 
+        utc_now = timezone.now()
         cursor.execute(
-            "UPDATE transaction SET status = 'paid' where transaction_id = %s", [transaction_id]
+            "UPDATE transaction SET status = 'paid', updated_at = %s where transaction_id = %s", [utc_now, transaction_id]
         )
 
         transaction_query = """
@@ -122,8 +123,9 @@ def mark_as_unpaid(request, transaction_id):
         bill_id = cursor.fetchone()
         bill_id = bill_id[0]
 
+        utc_now = timezone.now()
         cursor.execute(
-            "UPDATE transaction SET status = 'unpaid' where transaction_id = %s", [transaction_id]
+            "UPDATE transaction SET status = 'unpaid', updated_at = %s where transaction_id = %s", [utc_now, transaction_id]
         )
 
         transaction_query = """
