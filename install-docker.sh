@@ -13,3 +13,7 @@ echo \
 sudo apt-get update -y
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+
+# Install NPM
+sudo apt-get install npm -y

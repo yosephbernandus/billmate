@@ -19,10 +19,16 @@
 - pdm run manage.py migrate base zero (zero)
 - pdm run manage.py migrate base <migration_name> (1 step migration)
 
-## Debug port
+
+# Debug port
 - sudo lsof -i -P -n | grep <port number>
 - sudo lsof -i :80
-- sudo systemctl stop apache2 (default ubuntu)
+- sudo systemctl stop apache2
 
-## allowed file
-- chmod +x
+## NPM Dependencies Prod
+- npm install --production
+- wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash (install node js package manager)
+- source ~/.bashrc
+- nvm install 20.11.1
+- nvm use 20.11.1
+- npx tailwindcss -i ./src/base/static/base/style.css -o ./src/base/static/base/output.css --minify (Production Mode)
