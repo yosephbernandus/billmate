@@ -7,6 +7,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 {% if request.user.is_authenticated %}
                     <li><a href="{% url 'home:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'bill_group:index' %}">Home</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                 {% endif %}
