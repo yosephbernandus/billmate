@@ -24,13 +24,16 @@
                         <a
                             hx-target="#list-transaction"
                             class="btn btn-xs btn-outline btn-success"
-                            hx-get="{% url 'transaction:mark-as-paid' transaction.transaction_id %}"
+                            hx-get="{% url 'transaction:mark_as_paid_transaction' transaction.transaction_id %}"
                         >
                             Mark As Paid
                         </a>
                         {% else %}
                         <a
-                            class="btn btn-xs btn-outline btn-warning" href="">
+                            hx-target="#list-transaction"
+                            class="btn btn-xs btn-outline btn-warning"
+                            hx-get="{% url 'transaction:mark_as_unpaid_transaction' transaction.transaction_id %}"
+                        >
                             Mark As Unpaid
                         </a>
                         {% endif %}
