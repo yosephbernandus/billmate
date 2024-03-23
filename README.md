@@ -18,3 +18,8 @@
 - pdm run manage.py makemigrations base --empty
 - pdm run manage.py migrate base zero (zero)
 - pdm run manage.py migrate base <migration_name> (1 step migration)
+
+# Debug port
+- sudo lsof -i -P -n | grep <port number>
+- sudo lsof -i :80
+- sudo systemctl stop apache2 (default ubuntu)

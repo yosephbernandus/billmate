@@ -19,17 +19,20 @@ env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ''),
     ALLOWED_HOSTS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, []),
     PGHOST=(str, ''),
     PGPORT=(int, 5432),
     PGUSER=(str, ''),
     PGPASSWORD=(str, ''),
     PGDB=(str, ''),
     HASH_IDS_SALT=(str, ''),
-    SERVER_HOST_NAME=(str, '')
+    SERVER_HOST_NAME=(str, ''),
+    PORT=(int, 8000),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Load Environment
 environ.Env.read_env(os.path.join(BASE_DIR.parent, ".env"))
@@ -146,8 +149,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR.parent, "static")
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
