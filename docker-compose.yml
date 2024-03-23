@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - shared-volume:/home/nonroot/.local/lib/python3.12/site-packages/static
+    environment:
+      DEBUG: $DEBUG
+      PORT: $PORT
+      SECRET_KEY: $SECRET_KEY
+      ALLOWED_HOSTS: $ALLOWED_HOSTS
+      PGHOST: $PGHOST
+      PGPORT: $PGPORT
+      PGUSER: $PGUSER
+      PGPASSWORD: $PGPASSWORD
+      PGDB: $PGDB
+      CSRF_TRUSTED_ORIGINS: $CSRF_TRUSTED_ORIGINS
+      HASH_IDS_SALT: $HASH_IDS_SALT
+      SERVER_HOST_NAME: $SERVER_HOST_NAME
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker
+      dockerfile: nginx.dockerfile
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - shared-volume:/home/nonroot/.local/lib/python3.12/site-packages/static
+    depends_on:
+      - app
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - ./docker/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: _iP0stgr3sP4ssw0rdXTr3m3lyL0ng
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+
+volumes:
+  shared-volume:
