@@ -19,8 +19,7 @@
 - pdm run manage.py migrate base zero (zero)
 - pdm run manage.py migrate base <migration_name> (1 step migration)
 
-
-# Debug port
+## Debug port
 - sudo lsof -i -P -n | grep <port number>
 - sudo lsof -i :80
 - sudo systemctl stop apache2
@@ -32,3 +31,10 @@
 - nvm install 20.11.1
 - nvm use 20.11.1
 - npx tailwindcss -i ./src/base/static/base/style.css -o ./src/base/static/base/output.css --minify (Production Mode)
+- Manual Handling (Move the output.css to static)
+
+## Debug Postgres
+- psql -U postgres -d postgres
+
+## Load Testing
+- npx autocannon https://django-2.mashanz.com/accounts/login/?next=/ -p 100 -c 100 -d 10
