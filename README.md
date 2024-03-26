@@ -38,3 +38,11 @@
 
 ## Load Testing
 - npx autocannon https://django-2.mashanz.com/accounts/login/?next=/ -p 100 -c 100 -d 10
+
+
+## Debug Nginx:
+- adding for check the web running
+```
+ports:
+    - 8000:8000
+```
